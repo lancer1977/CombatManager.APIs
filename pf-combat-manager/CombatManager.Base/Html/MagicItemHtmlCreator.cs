@@ -1,0 +1,107 @@
+using System.Text;
+using CombatManager.Utilities;
+
+namespace CombatManager.Html
+{
+    public class MagicItemHtmlCreator
+    {
+        public MagicItemHtmlCreator ()
+        {
+        }
+        
+        public static string CreateHtml(MagicItem item, bool showTitle = true, bool completepage = true, string css = null)
+        {
+
+            StringBuilder blocks = new StringBuilder();
+
+            if (completepage)
+            {
+                blocks.CreateHtmlHeader(css);
+            }
+
+            if (showTitle)
+            {
+                blocks.CreateHeader(item.Name, item.Group);
+            }
+
+
+            /*Paragraph details = new Paragraph();
+            details.Margin = new Thickness(0, 2, 0, 0);*/
+            
+            blocks.AppendOpenTag("p");
+            blocks.CreateItemIfNotNull("Aura ", true, item.Aura, " ", false);
+            blocks.CreateItemIfNotNull("[", false, item.AuraStrength, "]; ", false);
+            blocks.CreateItemIfNotNull("CL ", true, item.Cl.PastTense(), "", true);
+            blocks.CreateItemIfNotNull("Slot ", true, item.Slot, "; ", false);
+            blocks.CreateItemIfNotNull("Price ", true, item.Price, "; ", false);
+            blocks.CreateItemIfNotNull("Weight ", true, item.Weight, "", true);
+            blocks.AppendCloseTag("p");
+
+
+
+            if (!string.IsNullOrEmpty(item.DescHtml) || !string.IsNullOrEmpty(item.Description))
+            {
+                blocks.CreateSectionHeader("DESCRIPTION");
+
+                if (!string.IsNullOrEmpty(item.DescHtml) && item.DescHtml != "NULL")
+                {
+
+                    blocks.AppendOpenTag("p", "description");
+                    blocks.Append(item.DescHtml);
+                    blocks.AppendCloseTag("p");
+                }
+                else if (item.Description != "NULL")
+                {
+
+
+                    blocks.AppendOpenTag("p", "description");
+
+                    blocks.CreateItemIfNotNull( null, true, item.Description, null, true);
+
+
+                    blocks.AppendCloseTag("p");
+                }
+
+            }
+
+            if (item.Requirements != null && item.Requirements.Length > 0 &&
+                item.Cost != null && item.Cost.Length > 0)
+            {
+                blocks.CreateSectionHeader("CONSTRUCTION");
+
+                
+                blocks.AppendOpenTag("p");
+                blocks.CreateItemIfNotNull("Requirements ", true, item.Requirements, "; ", false);
+                blocks.CreateItemIfNotNull("Cost ", true, item.Cost, "", true);
+                blocks.AppendCloseTag("p");
+
+            }
+
+            if (!string.IsNullOrEmpty(item.Destruction) && item.Destruction != "NULL")
+            {
+                blocks.CreateSectionHeader("DESTRUCTION");
+
+
+                blocks.AppendOpenTag("p");
+
+                blocks.CreateItemIfNotNull(null, false, item.Destruction, null, true);
+
+                blocks.AppendCloseTag("p");
+            }
+
+            if (SourceInfo.GetSourceType(item.Source) != SourceType.Core)
+            {
+                blocks.CreateItemIfNotNull("Source: ", SourceInfo.GetSource(item.Source));
+
+            }
+
+            if (completepage)
+            {
+                blocks.CreateHtmlFooter();
+            }
+
+            return blocks.ToString();
+        }
+    }
+}
+

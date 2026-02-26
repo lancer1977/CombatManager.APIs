@@ -1,0 +1,693 @@
+/*
+ *  CMUtilities.cs
+ *
+ *  Copyright (C) 2010-2012 Kyle Olson, kyle@kyleolson.com
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ */
+
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.IO;
+using System.Windows.Media;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Runtime.InteropServices;
+using System.Windows.Media.Imaging;
+
+namespace CombatManager
+{
+
+    public static class CMUIUtilities
+    {
+        public static T FindVisualParent<T>(this DependencyObject child)
+          where T : DependencyObject
+        {
+            // get parent item
+            var parentObject = VisualTreeHelper.GetParent(child);
+
+            // we’ve reached the end of the tree
+            if (parentObject == null) return null;
+
+            // check if the parent matches the type we’re looking for
+            var parent = parentObject as T;
+            if (parent != null)
+            {
+                return parent;
+            }
+            else
+            {
+                // use recursion to proceed with next level
+                return FindVisualParent<T>(parentObject);
+            }
+        }
+
+        public static T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
+        {
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(obj, i);
+                if (child != null && child is T)
+                {
+                    return (T)child;
+                }
+                else
+                {
+                    var childOfChild = FindVisualChild<T>(child);
+                    if (childOfChild != null)
+                    {
+                        return childOfChild;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static T GetSibling<T>(this DependencyObject e, String name) where T : DependencyObject
+        {
+            var parent = VisualTreeHelper.GetParent(e);
+            return parent.GetChild<T>(name);
+
+        }
+
+
+        public static T GetChild<T>(this DependencyObject parent, String name) where T : DependencyObject
+        {
+            var count = VisualTreeHelper.GetChildrenCount(parent);
+            for (var i = 0; i < count; i++)
+            {
+                var dob = VisualTreeHelper.GetChild(parent, i);
+                if (dob is FrameworkElement)
+                {
+                    var fe = (FrameworkElement)dob;
+                    if (fe.Name == name)
+                    {
+                        return fe as T;
+                    }
+                }
+
+            }
+            return null;
+        }
+
+        public static void ScrollChildToBottom(this DependencyObject e)
+        {
+
+            var s = CMUIUtilities.FindVisualChild<ScrollViewer>(e);
+            if (s != null)
+            {
+                s.ScrollToBottom();
+            }
+        }
+
+        public static ListBoxItem ClickedItem(this ListBox box, MouseEventArgs e)
+        {
+            return ClickedListBoxItem(box, e);
+        }
+
+        public static ListBoxItem ClickedListBoxItem(ListBox box, MouseEventArgs e)
+        {
+            ListBoxItem target = null;
+
+
+
+            for (var i = 0; i < box.Items.Count; i++)
+            {
+                var item = (ListBoxItem)box.ItemContainerGenerator.ContainerFromIndex(i);
+
+                if (item != null)
+                {
+
+                    var p = e.GetPosition(item);
+                    if (p != null)
+                    {
+                        var bounds = VisualTreeHelper.GetDescendantBounds(item);
+
+                        if (bounds.Contains(p))
+                        {
+                            target = item;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return target;
+        }
+
+        public static Image GetNamedImageControl(string name)
+        {
+
+            var i = new Image();
+            i.Source = StringImageSmallIconConverter.FromName(name);
+            i.Width = 16;
+            i.Height = 16;
+
+            return i;
+        }
+
+        public static void SetNamedIcon(this MenuItem mi, string name)
+        {
+            mi.Icon = GetNamedImageControl(name); ;
+        }
+
+        public static void AddSeparatorIfNotEmpty(this ItemsControl ic)
+        {
+            if (ic.Items.Count > 0)
+            {
+                ic.Items.Add(new Separator());
+            }
+        }
+
+        public static Size Multiply(this Size oldSize, double scale)
+        {
+            return new Size(oldSize.Width * scale, oldSize.Height * scale);
+        }
+
+        public static Size Divide(this Size oldSize, double scale)
+        {
+            return new Size(oldSize.Width / scale, oldSize.Height / scale);
+        }
+
+        public static Point Subtract(this Size size1, Size size2)
+        {
+            return new Point(size1.Width - size2.Width, size1.Height - size2.Height);
+        }
+
+
+        public static Point Multiply(this Point oldPoint, double scale)
+        {
+            return new Point(oldPoint.X * scale, oldPoint.Y * scale);
+        }
+
+        public static Point Divide(this Point oldPoint, double scale)
+        {
+            return new Point(oldPoint.X / scale, oldPoint.Y / scale);
+        }
+
+        public static Point Add(this Point oldPoint, double scalar)
+        {
+            return new Point(oldPoint.X + scalar, oldPoint.Y + scalar);
+        }
+
+        public static Point Add(this Point oldPoint, double sX, double sY)
+        {
+            return new Point(oldPoint.X + sX, oldPoint.Y + sY);
+        }
+
+        public static Point Add(this Point oldPoint, Point addPoint)
+        {
+            return new Point(oldPoint.X + addPoint.X, oldPoint.Y + addPoint.Y);
+        }
+
+        public static Size Difference(this Point oldPoint, Point subPoint)
+        {
+
+            return new Size(Math.Abs(oldPoint.X - subPoint.X), Math.Abs(oldPoint.Y - subPoint.Y));
+        }
+
+        public static Point Subtract(this Point oldPoint, Point subPoint)
+        {
+            return new Point(oldPoint.X - subPoint.X, oldPoint.Y - subPoint.Y);
+        }
+
+
+        public static Point Lerp(this Point pt1, Point pt2, double pct)
+        {
+            Point diff = pt2.Subtract(pt1);
+            var change = diff.Multiply(pct.Clamp(0, 1));
+            return pt2.Add(change);
+        }
+
+        public static Color FindColor(this FrameworkElement element, String name)
+        {
+            return (Color)element.FindResource(name);
+        }
+
+        public static Brush FindSolidBrush(this FrameworkElement element, String name)
+        {
+            return new SolidColorBrush(element.FindColor(name));
+        }
+
+        public static Color ToColor(this UInt32 source)
+        {
+
+            var bytes = BitConverter.GetBytes(source);
+            return Color.FromArgb(bytes[3], bytes[2], bytes[1], bytes[0]);
+        }
+
+        public static System.Drawing.Color ToOldColor(this Color color)
+        {
+            return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+
+        }
+
+        public static Color ToNewColor(this System.Drawing.Color color)
+        {
+            return Color.FromArgb(color.A, color.R, color.G, color.B);
+
+        }
+
+        public static uint ToUInt32(this Color color)
+        {
+            return BitConverter.ToUInt32(new byte[] { color.B, color.G, color.R, color.A }, 0);
+        }
+        
+        public static int ToOLEColor(this UInt32 color)
+        {
+            return System.Drawing.ColorTranslator.ToOle(color.ToColor().ToOldColor());
+
+        }
+
+        public static uint FromOLEColor(this int color)
+        {
+            return System.Drawing.ColorTranslator.FromOle(color).ToNewColor().ToUInt32();
+        }
+
+        public static SolidColorBrush Brush(this Color color)
+        {
+            return new SolidColorBrush(color);
+        }
+
+        public static Point Center(this Rect rect)
+        {
+            return new Point(rect.X + rect.Width / 2.0, rect.Y + rect.Height / 2.0);
+
+        }
+
+        public static double CircleSize(this Rect rect)
+        {
+            return Math.Min(rect.Width / 2.0, rect.Height / 2.0);
+        }
+
+
+
+        public static Rect ScaleCenter(this Rect r, double x, double y)
+        {
+            var rectOut = r;
+            var newWidth = r.Width * x;
+            var newHeight = r.Height * y;
+
+            var widthInflate = (newWidth - r.Width) / 2.0;
+            var heightInflate = (newHeight - r.Height) / 2.0;
+            rectOut.Inflate(widthInflate, heightInflate);
+            return rectOut;
+        }
+
+        public static System.Windows.Shapes.Path ToButtonPath(this Geometry geo, Color color)
+        {
+            var path = new System.Windows.Shapes.Path();
+            path.Data = geo;
+            path.Fill = new SolidColorBrush(color);
+            path.Height = 16;
+            path.Width = 16;
+            path.Stretch = Stretch.Fill;
+            return path;
+        }
+
+
+        public static Geometry RectanglePath(this Rect rect)
+        {
+            return rect.RectanglePath(0);
+        }
+
+        public static Geometry RectanglePath(this Rect rect, double borderWidth)
+        {
+
+            var diff = borderWidth / 2.0;
+
+            var shrinkRect = rect;
+            shrinkRect.Inflate(-diff, -diff);
+
+            return new RectangleGeometry(shrinkRect);
+
+        }
+
+        public static Geometry CirclePath(this Rect rect)
+        {
+            return rect.CirclePath(0);
+        }
+
+        public static Geometry CirclePath(this Rect rect, double borderWidth)
+        {
+            var circleSize = rect.CircleSize() - (borderWidth / 2.0);
+
+            return new EllipseGeometry(rect.Center(), circleSize, circleSize);
+
+        }
+
+        public static Geometry DiamondPath(this Rect rect)
+        {
+            return rect.DiamondPath(0);
+        }
+
+
+
+
+
+
+        public static Geometry DiamondPath(this Rect rect, double borderWidth)
+        {
+            var diff = borderWidth / 2.0;
+
+            var p1 = new Point(rect.X + rect.Width / 2.0, rect.Y + diff);
+            var p2 = new Point(rect.X + rect.Width - diff, rect.Y + rect.Height / 2.0);
+            var p3 = new Point(rect.X + rect.Width / 2.0, rect.Y + rect.Height - diff);
+            var p4 = new Point(rect.X + diff, rect.Y + rect.Height / 2.0);
+
+            return CreatePathGeometry(new Point[] { p1, p2, p3, p4 });
+
+        }
+        public static Geometry TargetPath(this Rect rect)
+        {
+            return rect.TargetPath(0);
+        }
+        public static Geometry TargetPath(this Rect rect, double borderWidth)
+        {
+
+            var diff = borderWidth / 2.0;
+            var fullRadius = rect.CircleSize() - diff;
+            var bigRadius = fullRadius * .8;
+            var smallRadius = bigRadius * .7;
+
+            var diffRect = rect;
+            diffRect.Inflate(-diff, -diff);
+
+            var ellipseOut = new EllipseGeometry(rect.Center(), bigRadius, bigRadius);
+            var ellipseIn = new EllipseGeometry(rect.Center(), smallRadius, smallRadius);
+
+            var cg = new CombinedGeometry(GeometryCombineMode.Xor, ellipseOut, ellipseIn);
+
+            Rect wRect = diffRect.ScaleCenter(1, .1);
+            Rect hRect = diffRect.ScaleCenter(.1, 1);
+
+            cg = new CombinedGeometry(GeometryCombineMode.Union, new RectangleGeometry(wRect), cg);
+            cg = new CombinedGeometry(GeometryCombineMode.Union, new RectangleGeometry(hRect), cg);
+
+            Rect cRect = diffRect.ScaleCenter(.3, .3);
+            cg = new CombinedGeometry(GeometryCombineMode.Exclude, cg, new RectangleGeometry(cRect));
+            return cg;
+
+        }
+        public static Geometry StarPath(this Rect rect)
+        {
+            return rect.StarPath(0);
+        }
+        public static Geometry StarPath(this Rect rect, double borderWidth)
+        {
+
+            var diff = borderWidth / 2.0;
+            var radius = (rect.CircleSize() - diff) * .8;
+            Point center = rect.Center();
+
+            var innerScale = (float)(Math.Cos(2.0 * Math.PI / 5.0) / Math.Cos(Math.PI / 5.0));
+
+
+
+            var points = new Point[10];
+
+            for (var i = 0; i < 5; i++)
+            {
+                var angle = ((double)i) * (Math.PI * 2.0) / 5.0f - Math.PI / 2.0;
+                points[i * 2] = new Point(center.X + Math.Cos(angle) * radius, center.Y + Math.Sin(angle) * radius);
+                angle += Math.PI * 2.0 / 10.0;
+                points[i * 2 + 1] = new Point(center.X + Math.Cos(angle) * radius * innerScale, center.Y + Math.Sin(angle) * radius * innerScale);
+
+            }
+
+
+            return CreatePathGeometry(points);
+
+        }
+
+        public static PathGeometry CreatePathGeometry(Point[] points)
+        {
+            if (points.Length > 0)
+            {
+                var start = points[0];
+                var segments = new List<LineSegment>();
+                for (var i = 1; i < points.Length; i++)
+                {
+                    segments.Add(new LineSegment(points[i], true));
+                }
+                var figure = new PathFigure(start, segments, true);
+                var geometry = new PathGeometry();
+                geometry.Figures.Add(figure);
+                return geometry;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static DependencyObject FindLogicalNode(this DependencyObject ob, string name)
+        {
+            return LogicalTreeHelper.FindLogicalNode(ob, name);
+        }
+
+        public static BitmapImage LoadBitmapFromImagesDir(String filename)
+        {
+            return new BitmapImage(new Uri("pack://application:,,,/Images/" + filename));
+        }
+
+        public static DependencyObject SetElementVisibility(this DependencyObject dep, String name, Visibility visibility)
+        {
+            var ui = dep.FindLogicalNode(name) as UIElement;
+
+            if (ui != null)
+            {
+                ui.Visibility = visibility;
+            }
+
+            return dep;
+        }
+
+        public static DependencyObject SetElementsVisibility(this DependencyObject dep, String[] names, Visibility visibility)
+        {
+            foreach (var name in names)
+            {
+                dep.SetElementVisibility(name, visibility);
+            }
+
+            return dep;
+        }
+
+        public static void ScrollBy(this ScrollViewer viewer, double x, double y)
+        {
+            var newX = viewer.HorizontalOffset + x;
+            var newY = viewer.VerticalOffset + y;
+
+            viewer.ScrollToHorizontalOffset(newX);
+            viewer.ScrollToVerticalOffset(newY);
+
+        }
+
+        public static void ScrollTo(this ScrollViewer viewer, double x, double y)
+        {
+
+            viewer.ScrollToHorizontalOffset(x);
+            viewer.ScrollToVerticalOffset(y);
+
+        }
+
+        public static Size ActualSize(this FrameworkElement fe)
+        {
+            return new Size(fe.ActualWidth, fe.ActualHeight);
+        }
+
+        public static Size ScrollableSize(this ScrollViewer sv)
+        {
+            return new Size(sv.ScrollableWidth, sv.ScrollableHeight);
+        }
+
+
+        public static Brush GetBrush(this Application app, string brush)
+        {
+            return (app.Resources[brush]) as Brush;
+        }
+
+        public static Color GetColor(this Application app, string color)
+        {
+            return (Color)(app.Resources[color]);
+        }
+
+        public const String PrimaryColorLight = "PrimaryColorLight";
+        public const String PrimaryColorMedium = "PrimaryColorMedium";
+        public const String PrimaryColorDark = "PrimaryColorDark";
+        public const String PrimaryColorDarker = "PrimaryColorDarker";
+        public const String SecondaryColorALighter = "SecondaryColorALighter";
+        public const String SecondaryColorALight = "SecondaryColorALight";
+        public const String SecondaryColorAMedium = "SecondaryColorAMedium";
+        public const String SecondaryColorADark = "SecondaryColorADark";
+        public const String SecondaryColorADarker = "SecondaryColorADarker";
+        public const String SecondaryColorBLighter = "SecondaryColorBLighter";
+        public const String SecondaryColorBLight = "SecondaryColorBLight";
+        public const String SecondaryColorBMedium = "SecondaryColorBMedium";
+        public const String SecondaryColorBDark = "SecondaryColorBDark";
+        public const String SecondaryColorBDarker = "SecondaryColorBDarker";
+        public const String ThemeTextForeground = "ThemeTextForeground";
+        public const String ThemeTextBackground = "ThemeTextBackground";
+        public const String HealthBackground = "HealthBackground";
+
+        public static Color ToColor(this System.Drawing.Color oc)
+        {
+            return Color.FromArgb(oc.A, oc.R, oc.G, oc.B);
+        }
+
+    }
+
+
+    public static class CMFileUtilities
+    {
+        public static string AppDataDir
+        {
+            get
+            {
+                var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                path = System.IO.Path.Combine(path, "Combat Manager");
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                return path;
+            }
+        }
+
+        public static string AppDataSubDir(String name)
+        {
+            var path = System.IO.Path.Combine(AppDataDir, name);
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            return path;
+        }
+
+    }
+
+
+
+    public class DebugTimer
+    {
+        [DllImport("winmm.dll", EntryPoint = "timeGetTime")]
+        public static extern uint timeGetTime();
+
+        uint _Time;
+        uint _Last;
+        bool _ShowTotals = true;
+        string _Name;
+
+        public DebugTimer() : this (null, true)
+        {
+        }
+
+        public DebugTimer(string name)
+            : this(name, true)
+        {
+
+        }
+
+        public DebugTimer(string name, bool showTotals) : this(name, showTotals, true)
+        {
+
+        }
+
+        public DebugTimer(string name, bool showTotals, bool showStart) 
+        {
+            _ShowTotals = showTotals;
+            _Time = timeGetTime();
+            _Last = _Time;
+            _Name = name;
+            if (showStart)
+            {
+                System.Diagnostics.Debug.WriteLine("Start Timer " + ((_Name == null) ? "" : _Name));
+            }
+
+
+        }
+
+        private void Mark(string message)
+        {
+
+            var newTime = timeGetTime();
+            TimeMessage(message, newTime);
+            _Last = newTime;
+        }
+
+        public void MarkEvent(string text)
+        {
+            Mark(text);
+        }
+
+        public void MarkEventIf(string message, uint time)
+        {
+
+            var newTime = timeGetTime();
+
+            if (newTime - _Last >= time)
+            {
+
+                TimeMessage(message, newTime);
+            }
+            _Last = newTime;
+        }
+
+
+        public void MarkEventIfTotal(string message, uint time)
+        {
+
+            var newTime = timeGetTime();
+
+            if (newTime - _Time >= time)
+            {
+                TimeMessage(message, newTime);
+            }
+            _Last = newTime;
+        }
+
+        public void SetLastTime()
+        {
+            var newTime = timeGetTime();
+            _Last = newTime;
+        }
+
+
+        private void TimeMessage(string message, uint newTime)
+        {
+
+            var output = message + ": " + (newTime - _Last);
+            if (_ShowTotals)
+            {
+                output += " Total: " + (newTime - _Time);
+            }
+            System.Diagnostics.Debug.WriteLine(output);
+        }
+
+
+        public void MarkEvent()
+        {
+            Mark((_Name==null)?"":_Name);
+        }
+
+    }
+
+}

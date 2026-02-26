@@ -1,0 +1,5 @@
+<!doctype html>
+<html>
+<head>
+%%STYLE_AREA%%
+</head>

@@ -1,0 +1,490 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Fonts\Cabin-Bold.otf" />
+    <None Remove="Fonts\Cabin-BoldItalic.otf" />
+    <None Remove="Fonts\Cabin-Italic.otf" />
+    <None Remove="Fonts\Cabin-Medium.otf" />
+    <None Remove="Fonts\Cabin-MediumItalic.otf" />
+    <None Remove="Fonts\Cabin-Regular.otf" />
+    <None Remove="Fonts\Cabin-SemiBold.otf" />
+    <None Remove="Fonts\Cabin-SemiBoldItalic.otf" />
+    <None Remove="images\Annotate_Warning.ico" />
+    <None Remove="images\ArrangeWindowsHS.png" />
+    <None Remove="images\arrowcurveleft-16.png" />
+    <None Remove="images\arrowcurveright-16.png" />
+    <None Remove="images\arrowdown-16.png" />
+    <None Remove="images\arrowsdown-16.png" />
+    <None Remove="images\arrowsup-16.png" />
+    <None Remove="images\arrowup-16.png" />
+    <None Remove="images\battery-low-16.png" />
+    <None Remove="images\bell-16.png" />
+    <None Remove="images\blacksquare-16.png" />
+    <None Remove="images\bleeding-16.png" />
+    <None Remove="images\blind-16.png" />
+    <None Remove="images\book-16.png" />
+    <None Remove="images\book-16@2x.png" />
+    <None Remove="images\bookmark-16.png" />
+    <None Remove="images\bow-16.png" />
+    <None Remove="images\broken-16.png" />
+    <None Remove="images\brush-16.png" />
+    <None Remove="images\bulb-16.png" />
+    <None Remove="images\check-16.png" />
+    <None Remove="images\CheckBox.png" />
+    <None Remove="images\CheckBox@2x.png" />
+    <None Remove="images\CheckBoxUnchecked.png" />
+    <None Remove="images\CheckBoxUnchecked@2x.png" />
+    <None Remove="images\claw-16.png" />
+    <None Remove="images\clock-16.png" />
+    <None Remove="images\clone-16.png" />
+    <None Remove="images\CM-Back.png" />
+    <None Remove="images\coins-16.png" />
+    <None Remove="images\coins-16@2x.png" />
+    <None Remove="images\CombatManagerGraphic.png" />
+    <None Remove="images\cower-16.png" />
+    <None Remove="images\d10-16.png" />
+    <None Remove="images\d10-16@2x.png" />
+    <None Remove="images\d100-16.png" />
+    <None Remove="images\d100-16@2x.png" />
+    <None Remove="images\d12-16.png" />
+    <None Remove="images\d12-16@2x.png" />
+    <None Remove="images\d20-16.png" />
+    <None Remove="images\d20-32.ico" />
+    <None Remove="images\d20-32.png" />
+    <None Remove="images\d20-40.png" />
+    <None Remove="images\d20p-16.png" />
+    <None Remove="images\d20p-16@2x.png" />
+    <None Remove="images\d4-16.png" />
+    <None Remove="images\d4-16@2x.png" />
+    <None Remove="images\d6-16.png" />
+    <None Remove="images\d6-16@2x.png" />
+    <None Remove="images\d8-16.png" />
+    <None Remove="images\d8-16@2x.png" />
+    <None Remove="images\dazed-16.png" />
+    <None Remove="images\dazzled-16.png" />
+    <None Remove="images\dead-16.png" />
+    <None Remove="images\deaf-16.png" />
+    <None Remove="images\delete-16.png" />
+    <None Remove="images\dice-16.png" />
+    <None Remove="images\disease-16.png" />
+    <None Remove="images\ellipsis-16.png" />
+    <None Remove="images\emerald-16.png" />
+    <None Remove="images\emerald-16@2x.png" />
+    <None Remove="images\eraser-48.png" />
+    <None Remove="images\exhausted-16.png" />
+    <None Remove="images\facinated-16.png" />
+    <None Remove="images\fatigued-16.png" />
+    <None Remove="images\flagblue-16.png" />
+    <None Remove="images\flaggreen-16.png" />
+    <None Remove="images\flagred-16.png" />
+    <None Remove="images\folderopen-16.png" />
+    <None Remove="images\folderopen-32.png" />
+    <None Remove="images\foot-16.png" />
+    <None Remove="images\gear.png" />
+    <None Remove="images\Generic_Document.png" />
+    <None Remove="images\globe-16.png" />
+    <None Remove="images\Globe.ico" />
+    <None Remove="images\hand-16.png" />
+    <None Remove="images\handicapped-16.png" />
+    <None Remove="images\hourglass-16.png" />
+    <None Remove="images\import-16.png" />
+    <None Remove="images\incorporeal-16.png" />
+    <None Remove="images\invisible-16.png" />
+    <None Remove="images\keys-16.png" />
+    <None Remove="images\lasso-16.png" />
+    <None Remove="images\lightning-16.png" />
+    <None Remove="images\link-16.png" />
+    <None Remove="images\lock-16.png" />
+    <None Remove="images\magearmor-16.png" />
+    <None Remove="images\mail-16.png" />
+    <None Remove="images\mail-16@2x.png" />
+    <None Remove="images\monster-16.png" />
+    <None Remove="images\Move.png" />
+    <None Remove="images\nauseated-16.png" />
+    <None Remove="images\next-16.png" />
+    <None Remove="images\NoteHS.png" />
+    <None Remove="images\notes-16.png" />
+    <None Remove="images\openHS.png" />
+    <None Remove="images\openHS@2x.png" />
+    <None Remove="images\panic-16.png" />
+    <None Remove="images\PauseButton.png" />
+    <None Remove="images\pdfIcon-16.png" />
+    <None Remove="images\pencil-16.png" />
+    <None Remove="images\person-16.png" />
+    <None Remove="images\personwindow-16.png" />
+    <None Remove="images\pin-16.png" />
+    <None Remove="images\PlayArrow.png" />
+    <None Remove="images\Plus.png" />
+    <None Remove="images\poison-16.png" />
+    <None Remove="images\prev-16.png" />
+    <None Remove="images\PrintHS.png" />
+    <None Remove="images\prone-16.png" />
+    <None Remove="images\qm-16.png" />
+    <None Remove="images\reaper-16.png" />
+    <None Remove="images\reset-16.png" />
+    <None Remove="images\rock-16.png" />
+    <None Remove="images\RotateArrow.png" />
+    <None Remove="images\saveHS.png" />
+    <None Remove="images\scared-16.png" />
+    <None Remove="images\screen-16.png" />
+    <None Remove="images\scroll-16.png" />
+    <None Remove="images\scrolleffect-16.png" />
+    <None Remove="images\shaken-16.png" />
+    <None Remove="images\sheet.png" />
+    <None Remove="images\shield-16.png" />
+    <None Remove="images\shield-error-16.png" />
+    <None Remove="images\sick-16.png" />
+    <None Remove="images\sleep-16.png" />
+    <None Remove="images\slow-16.png" />
+    <None Remove="images\sort-16.png" />
+    <None Remove="images\sort.ico" />
+    <None Remove="images\square.png" />
+    <None Remove="images\stable-16.png" />
+    <None Remove="images\star-16.png" />
+    <None Remove="images\stop-16.png" />
+    <None Remove="images\stunned-16.png" />
+    <None Remove="images\sword-16.png" />
+    <None Remove="images\sword-single-16.png" />
+    <None Remove="images\target-16.png" />
+    <None Remove="images\treasure-16.png" />
+    <None Remove="images\unlock-16.png" />
+    <None Remove="images\wand-16.png" />
+    <None Remove="images\zoomin-16.png" />
+    <None Remove="images\zoomout-16.png" />
+    <None Remove="images\zzz-16.png" />
+    <None Remove="license.txt" />
+    <None Remove="ogl.txt" />
+    <None Remove="version" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="images\d10-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d10-16@2x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d100-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d100-16@2x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d12-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d12-16@2x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d20p-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d20p-16@2x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d4-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d4-16@2x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d6-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d6-16@2x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d8-16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\d8-16@2x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CombatManager.Base\CombatManager.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="..\CombatManager.Base\Supporters.txt" Link="Supporters.txt" />
+    <Resource Include="Fonts\Cabin-Bold.otf" />
+    <Resource Include="Fonts\Cabin-BoldItalic.otf" />
+    <Resource Include="Fonts\Cabin-Italic.otf" />
+    <Resource Include="Fonts\Cabin-Medium.otf" />
+    <Resource Include="Fonts\Cabin-MediumItalic.otf" />
+    <Resource Include="Fonts\Cabin-Regular.otf" />
+    <Resource Include="Fonts\Cabin-SemiBold.otf" />
+    <Resource Include="Fonts\Cabin-SemiBoldItalic.otf" />
+    <Resource Include="images\Annotate_Warning.ico" />
+    <Resource Include="images\ArrangeWindowsHS.png" />
+    <Resource Include="images\arrowcurveleft-16.png" />
+    <Resource Include="images\arrowcurveright-16.png" />
+    <Resource Include="images\arrowdown-16.png" />
+    <Resource Include="images\arrowsdown-16.png" />
+    <Resource Include="images\arrowsup-16.png" />
+    <Resource Include="images\arrowup-16.png" />
+    <Resource Include="images\battery-low-16.png" />
+    <Resource Include="images\bell-16.png" />
+    <Resource Include="images\blacksquare-16.png" />
+    <Resource Include="images\bleeding-16.png" />
+    <Resource Include="images\blind-16.png" />
+    <Resource Include="images\book-16.png" />
+    <Resource Include="images\book-16@2x.png" />
+    <Resource Include="images\bookmark-16.png" />
+    <Resource Include="images\bow-16.png" />
+    <Resource Include="images\broken-16.png" />
+    <Resource Include="images\brush-16.png" />
+    <Resource Include="images\bulb-16.png" />
+    <Resource Include="images\check-16.png" />
+    <Resource Include="images\CheckBox.png" />
+    <Resource Include="images\CheckBox@2x.png" />
+    <Resource Include="images\CheckBoxUnchecked.png" />
+    <Resource Include="images\CheckBoxUnchecked@2x.png" />
+    <Resource Include="images\claw-16.png" />
+    <Resource Include="images\clock-16.png" />
+    <Resource Include="images\clone-16.png" />
+    <Resource Include="images\CM-Back.png" />
+    <Resource Include="images\coins-16.png" />
+    <Resource Include="images\coins-16@2x.png" />
+    <Resource Include="images\CombatManagerGraphic.png" />
+    <Resource Include="images\cower-16.png" />
+    <Resource Include="images\d20-16.png" />
+    <Resource Include="images\d20-32.ico" />
+    <Resource Include="images\d20-32.png" />
+    <Resource Include="images\d20-40.png" />
+    <Resource Include="images\dazed-16.png" />
+    <Resource Include="images\dazzled-16.png" />
+    <Resource Include="images\dead-16.png" />
+    <Resource Include="images\deaf-16.png" />
+    <Resource Include="images\delete-16.png" />
+    <Resource Include="images\dice-16.png" />
+    <Resource Include="images\disease-16.png" />
+    <Resource Include="images\ellipsis-16.png" />
+    <Resource Include="images\emerald-16.png" />
+    <Resource Include="images\emerald-16@2x.png" />
+    <Resource Include="images\eraser-48.png" />
+    <Resource Include="images\exhausted-16.png" />
+    <Resource Include="images\facinated-16.png" />
+    <Resource Include="images\fatigued-16.png" />
+    <Resource Include="images\flagblue-16.png" />
+    <Resource Include="images\flaggreen-16.png" />
+    <Resource Include="images\flagred-16.png" />
+    <Resource Include="images\folderopen-16.png" />
+    <Resource Include="images\folderopen-32.png" />
+    <Resource Include="images\foot-16.png" />
+    <Resource Include="images\gear.png" />
+    <Resource Include="images\Generic_Document.png" />
+    <Resource Include="images\globe-16.png" />
+    <Resource Include="images\Globe.ico" />
+    <Resource Include="images\hand-16.png" />
+    <Resource Include="images\handicapped-16.png" />
+    <Resource Include="images\hourglass-16.png" />
+    <Resource Include="images\import-16.png" />
+    <Resource Include="images\incorporeal-16.png" />
+    <Resource Include="images\invisible-16.png" />
+    <Resource Include="images\keys-16.png" />
+    <Resource Include="images\lasso-16.png" />
+    <Resource Include="images\lightning-16.png" />
+    <Resource Include="images\link-16.png" />
+    <Resource Include="images\lock-16.png" />
+    <Resource Include="images\magearmor-16.png" />
+    <Resource Include="images\mail-16.png" />
+    <Resource Include="images\mail-16@2x.png" />
+    <Resource Include="images\monster-16.png" />
+    <Resource Include="images\Move.png" />
+    <Resource Include="images\nauseated-16.png" />
+    <Resource Include="images\next-16.png" />
+    <Resource Include="images\NoteHS.png" />
+    <Resource Include="images\notes-16.png" />
+    <Resource Include="images\openHS.png" />
+    <Resource Include="images\openHS@2x.png" />
+    <Resource Include="images\panic-16.png" />
+    <Resource Include="images\PauseButton.png" />
+    <Resource Include="images\pdfIcon-16.png" />
+    <Resource Include="images\pencil-16.png" />
+    <Resource Include="images\person-16.png" />
+    <Resource Include="images\personwindow-16.png" />
+    <Resource Include="images\pin-16.png" />
+    <Resource Include="images\PlayArrow.png" />
+    <Resource Include="images\Plus.png" />
+    <Resource Include="images\poison-16.png" />
+    <Resource Include="images\prev-16.png" />
+    <Resource Include="images\PrintHS.png" />
+    <Resource Include="images\prone-16.png" />
+    <Resource Include="images\qm-16.png" />
+    <Resource Include="images\reaper-16.png" />
+    <Resource Include="images\reset-16.png" />
+    <Resource Include="images\rock-16.png" />
+    <Resource Include="images\RotateArrow.png" />
+    <Resource Include="images\saveHS.png" />
+    <Resource Include="images\scared-16.png" />
+    <Resource Include="images\screen-16.png" />
+    <Resource Include="images\scroll-16.png" />
+    <Resource Include="images\scrolleffect-16.png" />
+    <Resource Include="images\shaken-16.png" />
+    <Resource Include="images\sheet.png" />
+    <Resource Include="images\shield-16.png" />
+    <Resource Include="images\shield-error-16.png" />
+    <Resource Include="images\sick-16.png" />
+    <Resource Include="images\sleep-16.png" />
+    <Resource Include="images\slow-16.png" />
+    <Resource Include="images\sort-16.png" />
+    <Resource Include="images\sort.ico" />
+    <Resource Include="images\square.png" />
+    <Resource Include="images\stable-16.png" />
+    <Resource Include="images\star-16.png" />
+    <Resource Include="images\stop-16.png" />
+    <Resource Include="images\stunned-16.png" />
+    <Resource Include="images\sword-16.png" />
+    <Resource Include="images\sword-single-16.png" />
+    <Resource Include="images\target-16.png" />
+    <Resource Include="images\treasure-16.png" />
+    <Resource Include="images\unlock-16.png" />
+    <Resource Include="images\wand-16.png" />
+    <Resource Include="images\zoomin-16.png" />
+    <Resource Include="images\zoomout-16.png" />
+    <Resource Include="images\zzz-16.png" />
+    <Resource Include="license.txt" />
+    <Resource Include="ogl.txt" />
+    <Resource Include="version" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="SQLite32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SQLite64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="AttacksWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="CampaignEventWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="CombatListWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ConditionSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="CustomCombatList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="CustomConditionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="DieRollEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ExportDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="FeatChangeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="FeatChangeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="FeatEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="HotKeysDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="HPChangeDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ManualAttacksEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="MonsterEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="NaturalAttackWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="NotesPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="OGLWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="PlayersOrMonstersDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="SettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Simple Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="SpellEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="SpinControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="SplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="WeaponSelectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+</Project>
