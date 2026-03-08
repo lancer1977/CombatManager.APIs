@@ -17,7 +17,7 @@ namespace CombatManager.Api
         }
         public string RootAddress { get; set; }
         public string Passcode { get; set; }
-        public string BaseAddress => RootAddress + "api/" ;
+        public string BaseAddress => $"{RootAddress?.TrimEnd('/')}/api/";
 
 
         private Task<T> RoutePost<T>(string address, object request)

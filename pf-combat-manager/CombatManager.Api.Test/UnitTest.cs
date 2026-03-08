@@ -13,6 +13,7 @@ namespace TestProject1
     /// <summary>
     /// Expects Combat manager to be running, 1 player, 1 monster, probably have to fix the chaId based on local data.
     /// </summary>
+    [Explicit("Integration tests - requires a running CombatManager instance")]
     public class Tests
     {
         ICombatManagerService _service;
