@@ -1,0 +1,82 @@
+name: CI Build Matrix
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  linux-build:
+    name: Linux build (API + console)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Configure Azure Artifacts feed auth
+        if: ${{ secrets.AZURE_ARTIFACTS_PAT != '' }}
+        run: |
+          dotnet nuget remove source PolyhydraSoftware || true
+          dotnet nuget add source "https://pkgs.dev.azure.com/polyhydragames/_packaging/PolyhydraSoftware/nuget/v3/index.json" \
+            --name "PolyhydraSoftware" \
+            --username "github" \
+            --password "${{ secrets.AZURE_ARTIFACTS_PAT }}" \
+            --store-password-in-clear-text
+
+      - name: Restore API core
+        run: dotnet restore pf-combat-manager/CombatManager.Api.Core/CombatManager.Api.Core.csproj --configfile NuGet.Config
+
+      - name: Build API core
+        run: dotnet build pf-combat-manager/CombatManager.Api.Core/CombatManager.Api.Core.csproj --configuration Release --no-restore
+
+      - name: Restore API
+        run: dotnet restore pf-combat-manager/CombatManager.Api/CombatManager.Api.csproj --configfile NuGet.Config
+
+      - name: Build API
+        run: dotnet build pf-combat-manager/CombatManager.Api/CombatManager.Api.csproj --configuration Release --no-restore
+
+      - name: Restore console sample
+        run: dotnet restore samples/CombatManager.Console/CombatManager.Console.csproj --configfile NuGet.Config
+
+      - name: Build console sample
+        run: dotnet build samples/CombatManager.Console/CombatManager.Console.csproj --configuration Release --no-restore
+
+  windows-build-and-test:
+    name: Windows build + test (full solution)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Configure Azure Artifacts feed auth
+        if: ${{ secrets.AZURE_ARTIFACTS_PAT != '' }}
+        shell: pwsh
+        run: |
+          dotnet nuget remove source PolyhydraSoftware
+          if ($LASTEXITCODE -ne 0) { $LASTEXITCODE = 0 }
+          dotnet nuget add source "https://pkgs.dev.azure.com/polyhydragames/_packaging/PolyhydraSoftware/nuget/v3/index.json" `
+            --name "PolyhydraSoftware" `
+            --username "github" `
+            --password "${{ secrets.AZURE_ARTIFACTS_PAT }}" `
+            --store-password-in-clear-text
+
+      - name: Restore solution
+        run: dotnet restore CombatManager.APIs.sln --configfile NuGet.Config
+
+      - name: Build solution
+        run: dotnet build CombatManager.APIs.sln --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test pf-combat-manager/CombatManager.Api.Test/CombatManagerApi.Test.csproj --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"

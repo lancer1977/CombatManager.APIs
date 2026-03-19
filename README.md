@@ -21,15 +21,18 @@ Client libraries and Pathfinder Combat Manager application — for integrating w
 
 ## Requirements
 
-- .NET 8.0 SDK
-- NuGet: PolyhydraGames packages (see NuGet.Config) — may require Azure DevOps authentication)
+- .NET 8.0 SDK or .NET 10.0 SDK
+- **Api.Core Dependency Model:** This project uses a local project reference to `CombatManager.Api.Core` (not a NuGet package). This allows development without Azure DevOps authentication for the core API libraries.
+- NuGet: PolyhydraGames packages (see NuGet.Config) — requires Azure DevOps authentication (see [docs/nuget-feed-auth.md](docs/nuget-feed-auth.md)) — only needed for `CombatManager.Base` and `CombatManager.WPF7`
 
 ## Building
 
 ```bash
-dotnet restore
-dotnet build
+dotnet restore CombatManager.APIs.sln --configfile NuGet.Config
+dotnet build CombatManager.APIs.sln
 ```
+
+If restore fails with `401 (Unauthorized)` against the Polyhydra feed, complete the auth steps in [docs/nuget-feed-auth.md](docs/nuget-feed-auth.md) and rerun the restore command.
 
 To build only the API (without WPF):
 ```bash
