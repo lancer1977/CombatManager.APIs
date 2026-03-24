@@ -56,3 +56,9 @@ Console.WriteLine($"Round {state.Round}, {state.CombatList?.Count} combatants");
 ## License
 
 See [LICENSE](LICENSE).
+
+
+## 📖 Documentation
+Detailed documentation can be found in the following sections:
+- [Feature Index](./docs/features/README.md)
+- [Core Capabilities](./docs/features/core-capabilities.md)
