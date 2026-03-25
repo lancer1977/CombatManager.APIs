@@ -22,7 +22,7 @@ Client libraries and Pathfinder Combat Manager application — for integrating w
 ## Requirements
 
 - .NET 8.0 SDK or .NET 10.0 SDK
-- **Api.Core Dependency Model:** This project uses a local project reference to `CombatManager.Api.Core` (not a NuGet package). This allows development without Azure DevOps authentication for the core API libraries.
+- **Api.Core Dependency Model:** `CombatManager.Api.Core` is a local project (not a NuGet package). See [ADR-0001](https://github.com/PolyhydraGames/rpg-combat-manager/blob/main/docs/decisions/0001-api-core-dependency-model.md) for details.
 - NuGet: PolyhydraGames packages (see NuGet.Config) — requires Azure DevOps authentication (see [docs/nuget-feed-auth.md](docs/nuget-feed-auth.md)) — only needed for `CombatManager.Base` and `CombatManager.WPF7`
 
 ## Building
