@@ -30,3 +30,5 @@ artifacts/
 
 # Optional: exclude large data if needed
 # pf-combat-manager/CombatManager.Base/Raw/
+
+*.bak
